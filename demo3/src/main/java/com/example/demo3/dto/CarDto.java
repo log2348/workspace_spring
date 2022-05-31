@@ -1,7 +1,10 @@
 package com.example.demo3.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CarDto {
 
 	private String name;
