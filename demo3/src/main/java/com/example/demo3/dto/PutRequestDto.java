@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-// @JsonNaming - 스네이크든 카멜든 상관없이 다 카멜로 만들어줌 (Strategy 패턴)
+//@JsonNaming - 스네이크든 카멜든 상관없이 다 카멜로 만들어줌 (Strategy 패턴)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PutRequestDto {
 	
