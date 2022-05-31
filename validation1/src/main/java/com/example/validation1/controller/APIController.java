@@ -47,6 +47,8 @@ public class APIController {
 		}
 
 		System.out.println(user);
+		
+		// 응답코드가 200이면 바디에 user dto 객체 넣어서 반환하는 것
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 }
