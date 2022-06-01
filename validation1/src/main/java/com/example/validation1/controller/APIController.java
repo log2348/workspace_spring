@@ -1,21 +1,39 @@
 package com.example.validation1.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.validation1.dto.User;
 
 @RestController
 @RequestMapping("/api")
+@Validated // GET 방식일 때 처리, 안 붙이면 valid 처리 안됨
 public class APIController {
+	
+	// get 방식일 때 Valid 처리하기
+	// ?name=홍길동&age=10
+	@GetMapping("/user")
+	public User user(@Size(min = 2) @RequestParam String name,
+			@NonNull @Min(1) @RequestParam Integer age) {
+		User user = new User();
+		user.setName(name);
+		user.setAge(age);
+		return user;
+	}
 
 	// post 방식 처리에 대한 @Valid 확인 (반드시 Valid 지정해주어야 한다)
 	@PostMapping("/user")
