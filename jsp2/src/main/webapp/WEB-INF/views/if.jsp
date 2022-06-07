@@ -6,7 +6,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-<%-- 	
+<%--
+ 	
 p {
 	color: <%=color%>
 }--%>
@@ -17,8 +18,10 @@ p {
 		<h1>IF Example</h1>
 	</header>
 	<main>
-		<%!String msg = "red";
-	String color;%>
+		<%!
+		String msg = "red";
+		String color = "blue";
+		%>
 
 		<%
 		if (msg.equals("blue")) {
