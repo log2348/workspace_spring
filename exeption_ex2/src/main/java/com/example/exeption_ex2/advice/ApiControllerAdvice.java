@@ -1,12 +1,20 @@
 package com.example.exeption_ex2.advice;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.exeption_ex2.dto.CustomError;
 
 @RestControllerAdvice
 public class ApiControllerAdvice {
@@ -47,13 +55,51 @@ public class ApiControllerAdvice {
 	public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
 		System.out.println("MethodArgumentNotValidException 발생 !");
 		
+		// POST 방식일 때는 오류 난 부분 통으로 들어온다.
 		// 한 번에 전부 들어온다.
+		List<CustomError> errorList = new ArrayList<>();
+		
 		BindingResult bindingResult = e.getBindingResult();
 		bindingResult.getAllErrors().forEach(action -> {
-			// POST 방식일 때는 오류 난 부분 통으로 들어온다
-			System.out.println("action : " + action.toString());
+			// action
+			FieldError field = (FieldError) action;
+			
+			String fieldName = field.getField();
+			String message = field.getDefaultMessage();
+			
+			// Object
+			CustomError customError = new CustomError();
+			customError.setField(fieldName);
+			customError.setMessage(message);
+			
+			errorList.add(customError);
+			
+//			System.out.println("action : " + action.toString());
 		});
 		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorList);
+	}
+	
+	@ExceptionHandler(value = ConstraintViolationException.class)
+	public ResponseEntity<?> constraintViolationException(ConstraintViolationException e) {
+		// 동시에 확인 validation 걸렸을 때
+		System.out.println("ConstraintViolationException 발생 !");
+		List<CustomError> errorList = new ArrayList<>();
+		
+		e.getConstraintViolations().forEach(error -> {
+			String strField = error.getPropertyPath().toString();
+			int index = strField.indexOf(".");		
+			String fieldName = strField.substring(index + 1);
+			String message = error.getMessage();
+			
+			CustomError customError = new CustomError();
+			customError.setField(fieldName);
+			customError.setMessage(message);
+		
+			errorList.add(customError);
+
+		});
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorList);
 	}
 }
