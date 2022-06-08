@@ -1,6 +1,6 @@
 package adapter2;
 
-public class MyHotel {
+public class MyHotelRoom {
 	
 	public static void hotelConnect(IElectronic110v iElectronic110v) {
 		iElectronic110v.connect();
@@ -12,6 +12,9 @@ public class MyHotel {
 		MyHairDryer hairDryer = new MyHairDryer();
 		
 		hotelConnect(cleaner);
+		
+		// hotelConnect(laptop);
+		// hotelConnect(hairDryer);
 			
 		MyElectronicAdapter adapter1 = new MyElectronicAdapter(laptop);
 		hotelConnect(adapter1);
